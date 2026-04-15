@@ -1,0 +1,3515 @@
+{
+  "tools": [
+    {
+      "description": "List all projects of the current user.",
+      "inputSchema": {
+        "properties": {},
+        "title": "get_all_projectsArguments",
+        "type": "object"
+      },
+      "name": "list_projects"
+    },
+    {
+      "description": "Get project details by projectId.",
+      "inputSchema": {
+        "properties": {
+          "project_id": {
+            "title": "Project Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "project_id"
+        ],
+        "title": "get_projectArguments",
+        "type": "object"
+      },
+      "name": "get_project_by_id"
+    },
+    {
+      "description": "Get project details and all undone tasks in the project by projectId.",
+      "inputSchema": {
+        "properties": {
+          "project_id": {
+            "title": "Project Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "project_id"
+        ],
+        "title": "get_project_with_tasksArguments",
+        "type": "object"
+      },
+      "name": "get_project_with_undone_tasks"
+    },
+    {
+      "description": "Create a new project (list) in TickTick.",
+      "inputSchema": {
+        "properties": {
+          "color": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Color"
+          },
+          "kind": {
+            "default": "TASK",
+            "title": "Kind",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "sort_order": {
+            "default": 0,
+            "title": "Sort Order",
+            "type": "integer"
+          },
+          "view_mode": {
+            "default": "list",
+            "title": "View Mode",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "create_project_toolArguments",
+        "type": "object"
+      },
+      "name": "create_project"
+    },
+    {
+      "description": "Update an existing project by projectId.",
+      "inputSchema": {
+        "properties": {
+          "closed": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Closed"
+          },
+          "color": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Color"
+          },
+          "kind": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Kind"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Name"
+          },
+          "project_id": {
+            "title": "Project Id",
+            "type": "string"
+          },
+          "sort_order": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Sort Order"
+          },
+          "view_mode": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "View Mode"
+          }
+        },
+        "required": [
+          "project_id"
+        ],
+        "title": "update_project_toolArguments",
+        "type": "object"
+      },
+      "name": "update_project"
+    },
+    {
+      "description": "Create a new task in TickTick.",
+      "inputSchema": {
+        "$defs": {
+          "OpenChecklistItem": {
+            "description": "Checklist item within a task.",
+            "properties": {
+              "completedTime": {
+                "anyOf": [
+                  {
+                    "format": "date-time",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Checklist item completed time",
+                "title": "Completedtime"
+              },
+              "id": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Checklist item id, hex string of ObjectId",
+                "title": "Id"
+              },
+              "isAllDay": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Checklist item is all day",
+                "title": "Isallday"
+              },
+              "sortOrder": {
+                "default": 0,
+                "description": "Checklist item sort order",
+                "title": "Sortorder",
+                "type": "integer"
+              },
+              "startDate": {
+                "anyOf": [
+                  {
+                    "format": "date-time",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Checklist item start time",
+                "title": "Startdate"
+              },
+              "status": {
+                "default": 0,
+                "description": "Checklist item status, 0 means not completed, 1 means completed",
+                "title": "Status",
+                "type": "integer"
+              },
+              "timeZone": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Checklist item time zone",
+                "title": "Timezone"
+              },
+              "title": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Checklist item title",
+                "title": "Title"
+              }
+            },
+            "title": "OpenChecklistItem",
+            "type": "object"
+          },
+          "OpenTask": {
+            "description": "TickTick task model.",
+            "properties": {
+              "assignor": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task assignor",
+                "title": "Assignor"
+              },
+              "childIds": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array",
+                    "uniqueItems": true
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Child task ids",
+                "title": "Childids"
+              },
+              "columnId": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Column id for Kanban view",
+                "title": "Columnid"
+              },
+              "columnName": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Column name for Kanban view",
+                "title": "Columnname"
+              },
+              "completedTime": {
+                "anyOf": [
+                  {
+                    "format": "date-time",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task completed time",
+                "title": "Completedtime"
+              },
+              "content": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task content, show when kind is \"TASK\" or \"NOTE\"",
+                "title": "Content"
+              },
+              "desc": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task description, show when kind is \"CHECKLIST\"",
+                "title": "Desc"
+              },
+              "dueDate": {
+                "anyOf": [
+                  {
+                    "format": "date-time",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task due date, show when not same as start date, mean it is duration",
+                "title": "Duedate"
+              },
+              "etag": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task etag for optimistic locking",
+                "title": "Etag"
+              },
+              "id": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "The task unique id, hex string of ObjectId",
+                "title": "Id"
+              },
+              "isAllDay": {
+                "default": false,
+                "description": "Whether the task is all day task",
+                "title": "Isallday",
+                "type": "boolean"
+              },
+              "items": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "$ref": "#/$defs/OpenChecklistItem"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task checklist items, show when kind is \"CHECKLIST\"",
+                "title": "Items"
+              },
+              "kind": {
+                "anyOf": [
+                  {
+                    "enum": [
+                      "TEXT",
+                      "NOTE",
+                      "CHECKLIST"
+                    ],
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task kind, \"TASK\" or \"NOTE\" or \"CHECKLIST\"",
+                "title": "Kind"
+              },
+              "parentId": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Parent task id for subtasks",
+                "title": "Parentid"
+              },
+              "priority": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task priority, 0 means no priority, 1 means low priority, 3 means medium priority, 5 means high priority",
+                "title": "Priority"
+              },
+              "projectId": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Project id of task",
+                "title": "Projectid"
+              },
+              "reminders": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task reminders, Each trigger string must follow this pattern:\nTRIGGER(;RELATED=(END))?:(-)?P[nY][nM][nW][nD][T[nH][nM][nS]]\nExplanation\n    TRIGGER: \u2014 required prefix\n    ;RELATED=START|END \u2014 optional, defines whether the trigger is relative to the start or end time\n    - \u2014 optional, indicates the trigger occurs before the reference time (absence means after)\n    P \u2014 duration designator\n    nY nM nW nD \u2014 years, months, weeks, days\n    T \u2014 time separator\n    nH nM nS \u2014 hours, minutes, seconds.\nExamples\n[\n  \"TRIGGER:-PT60M\",\n  \"TRIGGER:-P1DT2H\",\n  \"TRIGGER;RELATED=END:-PT15M\",\n  \"TRIGGER:PT0S\"\n]\n Notes\n    \"TRIGGER:-PT60M\" means 60 minutes before the reference time\n    \"TRIGGER;RELATED=END:-PT15M\" means 15 minutes before the end time\n    \"TRIGGER:PT0S\" represents an \u201con-time\u201d trigger\n    This structure corresponds to a duration format similar to ISO-8601 (e.g., P1DT2H), with additional semantics for direction and reference point.\n",
+                "title": "Reminders"
+              },
+              "repeatFlag": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task repeat flag\nThis field MUST be a valid recurrence rule string.\n\nUse:\n- RRULE for standard recurrence\n- ERULE for custom or advanced recurrence\n\nDO NOT mix RRULE and ERULE.\n\nPrefer examples:\n- \"RRULE:FREQ=DAILY\"\n- \"RRULE:FREQ=WEEKLY;BYDAY=MO,WE\"\n- \"ERULE:NAME=CUSTOM;BYDATE=20260325,20260330\"\n        ",
+                "title": "Repeatflag"
+              },
+              "sortOrder": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task sort order",
+                "title": "Sortorder"
+              },
+              "startDate": {
+                "anyOf": [
+                  {
+                    "format": "date-time",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task start date",
+                "title": "Startdate"
+              },
+              "status": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task status, 0 means not completed, -1 means abandoned, 2 means completed",
+                "title": "Status"
+              },
+              "tags": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array",
+                    "uniqueItems": true
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task tags",
+                "title": "Tags"
+              },
+              "timeZone": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task time zone",
+                "title": "Timezone"
+              },
+              "title": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task title. Should be concise and clear. For longer content, use the content field instead.",
+                "title": "Title"
+              }
+            },
+            "title": "OpenTask",
+            "type": "object"
+          }
+        },
+        "properties": {
+          "task": {
+            "$ref": "#/$defs/OpenTask"
+          }
+        },
+        "required": [
+          "task"
+        ],
+        "title": "create_taskArguments",
+        "type": "object"
+      },
+      "name": "create_task"
+    },
+    {
+      "description": "Update an existing task by projectId and taskId.",
+      "inputSchema": {
+        "$defs": {
+          "OpenChecklistItem": {
+            "description": "Checklist item within a task.",
+            "properties": {
+              "completedTime": {
+                "anyOf": [
+                  {
+                    "format": "date-time",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Checklist item completed time",
+                "title": "Completedtime"
+              },
+              "id": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Checklist item id, hex string of ObjectId",
+                "title": "Id"
+              },
+              "isAllDay": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Checklist item is all day",
+                "title": "Isallday"
+              },
+              "sortOrder": {
+                "default": 0,
+                "description": "Checklist item sort order",
+                "title": "Sortorder",
+                "type": "integer"
+              },
+              "startDate": {
+                "anyOf": [
+                  {
+                    "format": "date-time",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Checklist item start time",
+                "title": "Startdate"
+              },
+              "status": {
+                "default": 0,
+                "description": "Checklist item status, 0 means not completed, 1 means completed",
+                "title": "Status",
+                "type": "integer"
+              },
+              "timeZone": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Checklist item time zone",
+                "title": "Timezone"
+              },
+              "title": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Checklist item title",
+                "title": "Title"
+              }
+            },
+            "title": "OpenChecklistItem",
+            "type": "object"
+          },
+          "OpenTask": {
+            "description": "TickTick task model.",
+            "properties": {
+              "assignor": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task assignor",
+                "title": "Assignor"
+              },
+              "childIds": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array",
+                    "uniqueItems": true
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Child task ids",
+                "title": "Childids"
+              },
+              "columnId": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Column id for Kanban view",
+                "title": "Columnid"
+              },
+              "columnName": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Column name for Kanban view",
+                "title": "Columnname"
+              },
+              "completedTime": {
+                "anyOf": [
+                  {
+                    "format": "date-time",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task completed time",
+                "title": "Completedtime"
+              },
+              "content": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task content, show when kind is \"TASK\" or \"NOTE\"",
+                "title": "Content"
+              },
+              "desc": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task description, show when kind is \"CHECKLIST\"",
+                "title": "Desc"
+              },
+              "dueDate": {
+                "anyOf": [
+                  {
+                    "format": "date-time",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task due date, show when not same as start date, mean it is duration",
+                "title": "Duedate"
+              },
+              "etag": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task etag for optimistic locking",
+                "title": "Etag"
+              },
+              "id": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "The task unique id, hex string of ObjectId",
+                "title": "Id"
+              },
+              "isAllDay": {
+                "default": false,
+                "description": "Whether the task is all day task",
+                "title": "Isallday",
+                "type": "boolean"
+              },
+              "items": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "$ref": "#/$defs/OpenChecklistItem"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task checklist items, show when kind is \"CHECKLIST\"",
+                "title": "Items"
+              },
+              "kind": {
+                "anyOf": [
+                  {
+                    "enum": [
+                      "TEXT",
+                      "NOTE",
+                      "CHECKLIST"
+                    ],
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task kind, \"TASK\" or \"NOTE\" or \"CHECKLIST\"",
+                "title": "Kind"
+              },
+              "parentId": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Parent task id for subtasks",
+                "title": "Parentid"
+              },
+              "priority": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task priority, 0 means no priority, 1 means low priority, 3 means medium priority, 5 means high priority",
+                "title": "Priority"
+              },
+              "projectId": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Project id of task",
+                "title": "Projectid"
+              },
+              "reminders": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task reminders, Each trigger string must follow this pattern:\nTRIGGER(;RELATED=(END))?:(-)?P[nY][nM][nW][nD][T[nH][nM][nS]]\nExplanation\n    TRIGGER: \u2014 required prefix\n    ;RELATED=START|END \u2014 optional, defines whether the trigger is relative to the start or end time\n    - \u2014 optional, indicates the trigger occurs before the reference time (absence means after)\n    P \u2014 duration designator\n    nY nM nW nD \u2014 years, months, weeks, days\n    T \u2014 time separator\n    nH nM nS \u2014 hours, minutes, seconds.\nExamples\n[\n  \"TRIGGER:-PT60M\",\n  \"TRIGGER:-P1DT2H\",\n  \"TRIGGER;RELATED=END:-PT15M\",\n  \"TRIGGER:PT0S\"\n]\n Notes\n    \"TRIGGER:-PT60M\" means 60 minutes before the reference time\n    \"TRIGGER;RELATED=END:-PT15M\" means 15 minutes before the end time\n    \"TRIGGER:PT0S\" represents an \u201con-time\u201d trigger\n    This structure corresponds to a duration format similar to ISO-8601 (e.g., P1DT2H), with additional semantics for direction and reference point.\n",
+                "title": "Reminders"
+              },
+              "repeatFlag": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task repeat flag\nThis field MUST be a valid recurrence rule string.\n\nUse:\n- RRULE for standard recurrence\n- ERULE for custom or advanced recurrence\n\nDO NOT mix RRULE and ERULE.\n\nPrefer examples:\n- \"RRULE:FREQ=DAILY\"\n- \"RRULE:FREQ=WEEKLY;BYDAY=MO,WE\"\n- \"ERULE:NAME=CUSTOM;BYDATE=20260325,20260330\"\n        ",
+                "title": "Repeatflag"
+              },
+              "sortOrder": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task sort order",
+                "title": "Sortorder"
+              },
+              "startDate": {
+                "anyOf": [
+                  {
+                    "format": "date-time",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task start date",
+                "title": "Startdate"
+              },
+              "status": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task status, 0 means not completed, -1 means abandoned, 2 means completed",
+                "title": "Status"
+              },
+              "tags": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array",
+                    "uniqueItems": true
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task tags",
+                "title": "Tags"
+              },
+              "timeZone": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task time zone",
+                "title": "Timezone"
+              },
+              "title": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task title. Should be concise and clear. For longer content, use the content field instead.",
+                "title": "Title"
+              }
+            },
+            "title": "OpenTask",
+            "type": "object"
+          }
+        },
+        "properties": {
+          "task": {
+            "$ref": "#/$defs/OpenTask"
+          },
+          "task_id": {
+            "title": "Task Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "task_id",
+          "task"
+        ],
+        "title": "update_taskArguments",
+        "type": "object"
+      },
+      "name": "update_task"
+    },
+    {
+      "description": "Get a task by projectId and taskId.",
+      "inputSchema": {
+        "properties": {
+          "project_id": {
+            "title": "Project Id",
+            "type": "string"
+          },
+          "task_id": {
+            "title": "Task Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "project_id",
+          "task_id"
+        ],
+        "title": "get_taskArguments",
+        "type": "object"
+      },
+      "name": "get_task_in_project"
+    },
+    {
+      "description": "Mark a task as completed by projectId and taskId.",
+      "inputSchema": {
+        "properties": {
+          "project_id": {
+            "title": "Project Id",
+            "type": "string"
+          },
+          "task_id": {
+            "title": "Task Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "project_id",
+          "task_id"
+        ],
+        "title": "complete_taskArguments",
+        "type": "object"
+      },
+      "name": "complete_task"
+    },
+    {
+      "description": "Complete multiple tasks in a project. Maximum 20 tasks per request.",
+      "inputSchema": {
+        "properties": {
+          "project_id": {
+            "title": "Project Id",
+            "type": "string"
+          },
+          "task_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Task Ids",
+            "type": "array"
+          }
+        },
+        "required": [
+          "project_id",
+          "task_ids"
+        ],
+        "title": "complete_tasksArguments",
+        "type": "object"
+      },
+      "name": "complete_tasks_in_project"
+    },
+    {
+      "description": "List all habits of the current user.",
+      "inputSchema": {
+        "properties": {},
+        "title": "list_habitsArguments",
+        "type": "object"
+      },
+      "name": "list_habits"
+    },
+    {
+      "description": "List all habit sections of the current user.",
+      "inputSchema": {
+        "properties": {},
+        "title": "list_habit_sectionsArguments",
+        "type": "object"
+      },
+      "name": "list_habit_sections"
+    },
+    {
+      "description": "Get habit details by habitId.",
+      "inputSchema": {
+        "properties": {
+          "habit_id": {
+            "title": "Habit Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "habit_id"
+        ],
+        "title": "get_habitArguments",
+        "type": "object"
+      },
+      "name": "get_habit"
+    },
+    {
+      "description": "Create a new habit in TickTick.",
+      "inputSchema": {
+        "$defs": {
+          "OpenHabit": {
+            "description": "TickTick habit model.",
+            "properties": {
+              "archivedTime": {
+                "anyOf": [
+                  {
+                    "format": "date-time",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Archived time",
+                "title": "Archivedtime"
+              },
+              "color": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Habit color",
+                "title": "Color"
+              },
+              "completedCycles": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Completed cycles",
+                "title": "Completedcycles"
+              },
+              "createdTime": {
+                "anyOf": [
+                  {
+                    "format": "date-time",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Created time",
+                "title": "Createdtime"
+              },
+              "encouragement": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Habit encouragement message",
+                "title": "Encouragement"
+              },
+              "etag": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Habit etag",
+                "title": "Etag"
+              },
+              "exDates": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Excluded dates",
+                "title": "Exdates"
+              },
+              "goal": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Habit goal",
+                "title": "Goal"
+              },
+              "iconRes": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Habit icon resource name. Predefined icons are kept as-is; custom icons are prefixed with 'txt_'.",
+                "title": "Iconres"
+              },
+              "id": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Habit unique id",
+                "title": "Id"
+              },
+              "modifiedTime": {
+                "anyOf": [
+                  {
+                    "format": "date-time",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Modified time",
+                "title": "Modifiedtime"
+              },
+              "name": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Habit name",
+                "title": "Name"
+              },
+              "recordEnable": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Whether record is enabled",
+                "title": "Recordenable"
+              },
+              "reminders": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Habit reminders",
+                "title": "Reminders"
+              },
+              "repeatRule": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Habit repeat rule",
+                "title": "Repeatrule"
+              },
+              "sectionId": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Habit section id",
+                "title": "Sectionid"
+              },
+              "sortOrder": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Habit sort order",
+                "title": "Sortorder"
+              },
+              "status": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Habit status",
+                "title": "Status"
+              },
+              "step": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Habit step",
+                "title": "Step"
+              },
+              "style": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Habit style",
+                "title": "Style"
+              },
+              "targetDays": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Target days",
+                "title": "Targetdays"
+              },
+              "targetStartDate": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Target start date in YYYYMMDD",
+                "title": "Targetstartdate"
+              },
+              "totalCheckIns": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Total check-ins",
+                "title": "Totalcheckins"
+              },
+              "type": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Habit type",
+                "title": "Type"
+              },
+              "unit": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Habit unit",
+                "title": "Unit"
+              }
+            },
+            "title": "OpenHabit",
+            "type": "object"
+          }
+        },
+        "properties": {
+          "habit": {
+            "$ref": "#/$defs/OpenHabit"
+          }
+        },
+        "required": [
+          "habit"
+        ],
+        "title": "create_habitArguments",
+        "type": "object"
+      },
+      "name": "create_habit"
+    },
+    {
+      "description": "Update an existing habit by habitId.",
+      "inputSchema": {
+        "$defs": {
+          "OpenHabit": {
+            "description": "TickTick habit model.",
+            "properties": {
+              "archivedTime": {
+                "anyOf": [
+                  {
+                    "format": "date-time",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Archived time",
+                "title": "Archivedtime"
+              },
+              "color": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Habit color",
+                "title": "Color"
+              },
+              "completedCycles": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Completed cycles",
+                "title": "Completedcycles"
+              },
+              "createdTime": {
+                "anyOf": [
+                  {
+                    "format": "date-time",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Created time",
+                "title": "Createdtime"
+              },
+              "encouragement": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Habit encouragement message",
+                "title": "Encouragement"
+              },
+              "etag": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Habit etag",
+                "title": "Etag"
+              },
+              "exDates": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Excluded dates",
+                "title": "Exdates"
+              },
+              "goal": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Habit goal",
+                "title": "Goal"
+              },
+              "iconRes": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Habit icon resource name. Predefined icons are kept as-is; custom icons are prefixed with 'txt_'.",
+                "title": "Iconres"
+              },
+              "id": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Habit unique id",
+                "title": "Id"
+              },
+              "modifiedTime": {
+                "anyOf": [
+                  {
+                    "format": "date-time",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Modified time",
+                "title": "Modifiedtime"
+              },
+              "name": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Habit name",
+                "title": "Name"
+              },
+              "recordEnable": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Whether record is enabled",
+                "title": "Recordenable"
+              },
+              "reminders": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Habit reminders",
+                "title": "Reminders"
+              },
+              "repeatRule": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Habit repeat rule",
+                "title": "Repeatrule"
+              },
+              "sectionId": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Habit section id",
+                "title": "Sectionid"
+              },
+              "sortOrder": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Habit sort order",
+                "title": "Sortorder"
+              },
+              "status": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Habit status",
+                "title": "Status"
+              },
+              "step": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Habit step",
+                "title": "Step"
+              },
+              "style": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Habit style",
+                "title": "Style"
+              },
+              "targetDays": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Target days",
+                "title": "Targetdays"
+              },
+              "targetStartDate": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Target start date in YYYYMMDD",
+                "title": "Targetstartdate"
+              },
+              "totalCheckIns": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Total check-ins",
+                "title": "Totalcheckins"
+              },
+              "type": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Habit type",
+                "title": "Type"
+              },
+              "unit": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Habit unit",
+                "title": "Unit"
+              }
+            },
+            "title": "OpenHabit",
+            "type": "object"
+          }
+        },
+        "properties": {
+          "habit": {
+            "$ref": "#/$defs/OpenHabit"
+          },
+          "habit_id": {
+            "title": "Habit Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "habit_id",
+          "habit"
+        ],
+        "title": "update_habitArguments",
+        "type": "object"
+      },
+      "name": "update_habit"
+    },
+    {
+      "description": "Create or update check-ins for a habit by habitId.",
+      "inputSchema": {
+        "$defs": {
+          "OpenHabitCheckinData": {
+            "description": "Single habit check-in data item.",
+            "properties": {
+              "goal": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": 1.0,
+                "description": "Check-in goal",
+                "title": "Goal"
+              },
+              "id": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Check-in id",
+                "title": "Id"
+              },
+              "opTime": {
+                "anyOf": [
+                  {
+                    "format": "date-time",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Operation time",
+                "title": "Optime"
+              },
+              "stamp": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Date stamp in YYYYMMDD",
+                "title": "Stamp"
+              },
+              "status": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Check-in status: 0 = unmarked, 1 = not completed, 2 = completed",
+                "title": "Status"
+              },
+              "time": {
+                "anyOf": [
+                  {
+                    "format": "date-time",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Check-in time",
+                "title": "Time"
+              },
+              "value": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": 1.0,
+                "description": "Check-in value",
+                "title": "Value"
+              }
+            },
+            "title": "OpenHabitCheckinData",
+            "type": "object"
+          }
+        },
+        "properties": {
+          "checkin_data": {
+            "$ref": "#/$defs/OpenHabitCheckinData"
+          },
+          "habit_id": {
+            "title": "Habit Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "habit_id",
+          "checkin_data"
+        ],
+        "title": "upsert_habit_checkinsArguments",
+        "type": "object"
+      },
+      "name": "upsert_habit_checkins"
+    },
+    {
+      "description": "Get habit check-ins by habitIds and date stamp range. `from_stamp` and `to_stamp` must be int date stamps in `yyyyMMdd` format (for example, `20260401` and `20260430`).",
+      "inputSchema": {
+        "properties": {
+          "from_stamp": {
+            "title": "From Stamp",
+            "type": "integer"
+          },
+          "habit_ids": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Habit Ids",
+            "type": "array"
+          },
+          "to_stamp": {
+            "title": "To Stamp",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "habit_ids",
+          "from_stamp",
+          "to_stamp"
+        ],
+        "title": "get_habit_checkinsArguments",
+        "type": "object"
+      },
+      "name": "get_habit_checkins"
+    },
+    {
+      "description": "Get a single focus record by focusId and type.",
+      "inputSchema": {
+        "properties": {
+          "focus_id": {
+            "title": "Focus Id",
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              0,
+              1
+            ],
+            "title": "Type",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "focus_id",
+          "type"
+        ],
+        "title": "get_focusArguments",
+        "type": "object"
+      },
+      "name": "get_focus"
+    },
+    {
+      "description": "Get focus records by time range and type. The time range must not exceed one month.",
+      "inputSchema": {
+        "properties": {
+          "from_time": {
+            "format": "date-time",
+            "title": "From Time",
+            "type": "string"
+          },
+          "to_time": {
+            "format": "date-time",
+            "title": "To Time",
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              0,
+              1
+            ],
+            "title": "Type",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "from_time",
+          "to_time",
+          "type"
+        ],
+        "title": "get_focuses_by_timeArguments",
+        "type": "object"
+      },
+      "name": "get_focuses_by_time"
+    },
+    {
+      "description": "Delete a focus record by focusId and type.",
+      "inputSchema": {
+        "properties": {
+          "focus_id": {
+            "title": "Focus Id",
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              0,
+              1
+            ],
+            "title": "Type",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "focus_id",
+          "type"
+        ],
+        "title": "delete_focusArguments",
+        "type": "object"
+      },
+      "name": "delete_focus"
+    },
+    {
+      "description": "Search tasks by keyword. Returns a list of matching tasks with taskId, title, and url.",
+      "inputSchema": {
+        "properties": {
+          "query": {
+            "title": "Query",
+            "type": "string"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "title": "search_taskArguments",
+        "type": "object"
+      },
+      "name": "search_task"
+    },
+    {
+      "description": "Search tasks in TickTick. Return a list of relevant result with IDS, title and URLs.",
+      "inputSchema": {
+        "properties": {
+          "query": {
+            "title": "Query",
+            "type": "string"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "title": "search_tasksArguments",
+        "type": "object"
+      },
+      "name": "search"
+    },
+    {
+      "description": "Fetch the full contents of a task by its ID.",
+      "inputSchema": {
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "title": "fetchArguments",
+        "type": "object"
+      },
+      "name": "fetch"
+    },
+    {
+      "description": "List undone tasks within a date range. The maximum range is 14 days between startDate and endDate.",
+      "inputSchema": {
+        "$defs": {
+          "UndoneTaskSearchOpenapi": {
+            "description": "Search criteria for undone tasks.",
+            "properties": {
+              "endDate": {
+                "anyOf": [
+                  {
+                    "format": "date-time",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "End date filter (ISO 8601)",
+                "title": "Enddate"
+              },
+              "projectIds": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array",
+                    "uniqueItems": true
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Set of project ids to search",
+                "title": "Projectids"
+              },
+              "startDate": {
+                "anyOf": [
+                  {
+                    "format": "date-time",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Start date filter (ISO 8601)",
+                "title": "Startdate"
+              }
+            },
+            "title": "UndoneTaskSearchOpenapi",
+            "type": "object"
+          }
+        },
+        "properties": {
+          "search": {
+            "$ref": "#/$defs/UndoneTaskSearchOpenapi"
+          }
+        },
+        "required": [
+          "search"
+        ],
+        "title": "get_undone_tasks_by_dateArguments",
+        "type": "object"
+      },
+      "name": "list_undone_tasks_by_date"
+    },
+    {
+      "description": "List undone tasks using a predefined time query. Supported values: today, last24hour, last7day, tomorrow, next24hour, next7day. Default is today.",
+      "inputSchema": {
+        "properties": {
+          "query_command": {
+            "default": "today",
+            "enum": [
+              "today",
+              "last24hour",
+              "last7day",
+              "tomorrow",
+              "next24hour",
+              "next7day"
+            ],
+            "title": "Query Command",
+            "type": "string"
+          }
+        },
+        "title": "get_undone_tasks_by_queryArguments",
+        "type": "object"
+      },
+      "name": "list_undone_tasks_by_time_query"
+    },
+    {
+      "description": "Get full task details by taskId.",
+      "inputSchema": {
+        "properties": {
+          "task_id": {
+            "title": "Task Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "task_id"
+        ],
+        "title": "get_task_by_idArguments",
+        "type": "object"
+      },
+      "name": "get_task_by_id"
+    },
+    {
+      "description": "Filter tasks by various criteria including date range, project IDs, priority, tag, kind and status.",
+      "inputSchema": {
+        "$defs": {
+          "TaskFilterOpenapi": {
+            "description": "Filter criteria for tasks.",
+            "properties": {
+              "endDate": {
+                "anyOf": [
+                  {
+                    "format": "date-time",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "End date filter (ISO 8601)",
+                "title": "Enddate"
+              },
+              "kind": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "List of task kinds to filter (\"TASK\", \"NOTE\", \"CHECKLIST\")",
+                "title": "Kind"
+              },
+              "priority": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "integer"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "List of priorities to filter (0, 1, 3, 5)",
+                "title": "Priority"
+              },
+              "projectIds": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "List of project ids to filter",
+                "title": "Projectids"
+              },
+              "startDate": {
+                "anyOf": [
+                  {
+                    "format": "date-time",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Start date filter (ISO 8601)",
+                "title": "Startdate"
+              },
+              "status": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "integer"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "List of task statuses to filter",
+                "title": "Status"
+              },
+              "tag": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "List of tags to filter",
+                "title": "Tag"
+              }
+            },
+            "title": "TaskFilterOpenapi",
+            "type": "object"
+          }
+        },
+        "properties": {
+          "filter": {
+            "$ref": "#/$defs/TaskFilterOpenapi"
+          }
+        },
+        "required": [
+          "filter"
+        ],
+        "title": "filter_tasksArguments",
+        "type": "object"
+      },
+      "name": "filter_tasks"
+    },
+    {
+      "description": "Get completed tasks based on specified search criteria including project IDs and date range.",
+      "inputSchema": {
+        "$defs": {
+          "CompletedTaskSearchOpenapi": {
+            "description": "Search criteria for completed tasks.",
+            "properties": {
+              "endDate": {
+                "anyOf": [
+                  {
+                    "format": "date-time",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "End date for completed tasks (ISO 8601)",
+                "title": "Enddate"
+              },
+              "projectIds": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "List of project ids to search",
+                "title": "Projectids"
+              },
+              "startDate": {
+                "anyOf": [
+                  {
+                    "format": "date-time",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Start date for completed tasks (ISO 8601)",
+                "title": "Startdate"
+              }
+            },
+            "title": "CompletedTaskSearchOpenapi",
+            "type": "object"
+          }
+        },
+        "properties": {
+          "search": {
+            "$ref": "#/$defs/CompletedTaskSearchOpenapi"
+          }
+        },
+        "required": [
+          "search"
+        ],
+        "title": "get_completed_tasksArguments",
+        "type": "object"
+      },
+      "name": "list_completed_tasks_by_date"
+    },
+    {
+      "description": "Move tasks to different projects. Used for reorganizing tasks across projects.",
+      "inputSchema": {
+        "$defs": {
+          "OpenMoveProject": {
+            "description": "Request to move a task between projects.",
+            "properties": {
+              "fromProjectId": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "The source project ID where the task is currently located",
+                "title": "Fromprojectid"
+              },
+              "sortOrder": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "The sort order position for the task in the destination project. not changed if not set",
+                "title": "Sortorder"
+              },
+              "taskId": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "The ID of the task to be moved",
+                "title": "Taskid"
+              },
+              "toProjectId": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "The destination project ID where the task will be moved to",
+                "title": "Toprojectid"
+              }
+            },
+            "title": "OpenMoveProject",
+            "type": "object"
+          }
+        },
+        "properties": {
+          "moves": {
+            "items": {
+              "$ref": "#/$defs/OpenMoveProject"
+            },
+            "title": "Moves",
+            "type": "array"
+          }
+        },
+        "required": [
+          "moves"
+        ],
+        "title": "move_taskArguments",
+        "type": "object"
+      },
+      "name": "move_task"
+    },
+    {
+      "description": "Batch add multiple tasks to TickTick. Each task should have required fields filled in.",
+      "inputSchema": {
+        "$defs": {
+          "OpenChecklistItem": {
+            "description": "Checklist item within a task.",
+            "properties": {
+              "completedTime": {
+                "anyOf": [
+                  {
+                    "format": "date-time",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Checklist item completed time",
+                "title": "Completedtime"
+              },
+              "id": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Checklist item id, hex string of ObjectId",
+                "title": "Id"
+              },
+              "isAllDay": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Checklist item is all day",
+                "title": "Isallday"
+              },
+              "sortOrder": {
+                "default": 0,
+                "description": "Checklist item sort order",
+                "title": "Sortorder",
+                "type": "integer"
+              },
+              "startDate": {
+                "anyOf": [
+                  {
+                    "format": "date-time",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Checklist item start time",
+                "title": "Startdate"
+              },
+              "status": {
+                "default": 0,
+                "description": "Checklist item status, 0 means not completed, 1 means completed",
+                "title": "Status",
+                "type": "integer"
+              },
+              "timeZone": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Checklist item time zone",
+                "title": "Timezone"
+              },
+              "title": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Checklist item title",
+                "title": "Title"
+              }
+            },
+            "title": "OpenChecklistItem",
+            "type": "object"
+          },
+          "OpenTask": {
+            "description": "TickTick task model.",
+            "properties": {
+              "assignor": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task assignor",
+                "title": "Assignor"
+              },
+              "childIds": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array",
+                    "uniqueItems": true
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Child task ids",
+                "title": "Childids"
+              },
+              "columnId": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Column id for Kanban view",
+                "title": "Columnid"
+              },
+              "columnName": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Column name for Kanban view",
+                "title": "Columnname"
+              },
+              "completedTime": {
+                "anyOf": [
+                  {
+                    "format": "date-time",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task completed time",
+                "title": "Completedtime"
+              },
+              "content": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task content, show when kind is \"TASK\" or \"NOTE\"",
+                "title": "Content"
+              },
+              "desc": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task description, show when kind is \"CHECKLIST\"",
+                "title": "Desc"
+              },
+              "dueDate": {
+                "anyOf": [
+                  {
+                    "format": "date-time",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task due date, show when not same as start date, mean it is duration",
+                "title": "Duedate"
+              },
+              "etag": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task etag for optimistic locking",
+                "title": "Etag"
+              },
+              "id": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "The task unique id, hex string of ObjectId",
+                "title": "Id"
+              },
+              "isAllDay": {
+                "default": false,
+                "description": "Whether the task is all day task",
+                "title": "Isallday",
+                "type": "boolean"
+              },
+              "items": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "$ref": "#/$defs/OpenChecklistItem"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task checklist items, show when kind is \"CHECKLIST\"",
+                "title": "Items"
+              },
+              "kind": {
+                "anyOf": [
+                  {
+                    "enum": [
+                      "TEXT",
+                      "NOTE",
+                      "CHECKLIST"
+                    ],
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task kind, \"TASK\" or \"NOTE\" or \"CHECKLIST\"",
+                "title": "Kind"
+              },
+              "parentId": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Parent task id for subtasks",
+                "title": "Parentid"
+              },
+              "priority": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task priority, 0 means no priority, 1 means low priority, 3 means medium priority, 5 means high priority",
+                "title": "Priority"
+              },
+              "projectId": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Project id of task",
+                "title": "Projectid"
+              },
+              "reminders": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task reminders, Each trigger string must follow this pattern:\nTRIGGER(;RELATED=(END))?:(-)?P[nY][nM][nW][nD][T[nH][nM][nS]]\nExplanation\n    TRIGGER: \u2014 required prefix\n    ;RELATED=START|END \u2014 optional, defines whether the trigger is relative to the start or end time\n    - \u2014 optional, indicates the trigger occurs before the reference time (absence means after)\n    P \u2014 duration designator\n    nY nM nW nD \u2014 years, months, weeks, days\n    T \u2014 time separator\n    nH nM nS \u2014 hours, minutes, seconds.\nExamples\n[\n  \"TRIGGER:-PT60M\",\n  \"TRIGGER:-P1DT2H\",\n  \"TRIGGER;RELATED=END:-PT15M\",\n  \"TRIGGER:PT0S\"\n]\n Notes\n    \"TRIGGER:-PT60M\" means 60 minutes before the reference time\n    \"TRIGGER;RELATED=END:-PT15M\" means 15 minutes before the end time\n    \"TRIGGER:PT0S\" represents an \u201con-time\u201d trigger\n    This structure corresponds to a duration format similar to ISO-8601 (e.g., P1DT2H), with additional semantics for direction and reference point.\n",
+                "title": "Reminders"
+              },
+              "repeatFlag": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task repeat flag\nThis field MUST be a valid recurrence rule string.\n\nUse:\n- RRULE for standard recurrence\n- ERULE for custom or advanced recurrence\n\nDO NOT mix RRULE and ERULE.\n\nPrefer examples:\n- \"RRULE:FREQ=DAILY\"\n- \"RRULE:FREQ=WEEKLY;BYDAY=MO,WE\"\n- \"ERULE:NAME=CUSTOM;BYDATE=20260325,20260330\"\n        ",
+                "title": "Repeatflag"
+              },
+              "sortOrder": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task sort order",
+                "title": "Sortorder"
+              },
+              "startDate": {
+                "anyOf": [
+                  {
+                    "format": "date-time",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task start date",
+                "title": "Startdate"
+              },
+              "status": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task status, 0 means not completed, -1 means abandoned, 2 means completed",
+                "title": "Status"
+              },
+              "tags": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array",
+                    "uniqueItems": true
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task tags",
+                "title": "Tags"
+              },
+              "timeZone": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task time zone",
+                "title": "Timezone"
+              },
+              "title": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task title. Should be concise and clear. For longer content, use the content field instead.",
+                "title": "Title"
+              }
+            },
+            "title": "OpenTask",
+            "type": "object"
+          }
+        },
+        "properties": {
+          "tasks": {
+            "items": {
+              "$ref": "#/$defs/OpenTask"
+            },
+            "title": "Tasks",
+            "type": "array"
+          }
+        },
+        "required": [
+          "tasks"
+        ],
+        "title": "batch_add_tasksArguments",
+        "type": "object"
+      },
+      "name": "batch_add_tasks"
+    },
+    {
+      "description": "Batch update multiple existing tasks in TickTick. Use this when you need to modify several tasks at once with new values.",
+      "inputSchema": {
+        "$defs": {
+          "OpenChecklistItem": {
+            "description": "Checklist item within a task.",
+            "properties": {
+              "completedTime": {
+                "anyOf": [
+                  {
+                    "format": "date-time",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Checklist item completed time",
+                "title": "Completedtime"
+              },
+              "id": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Checklist item id, hex string of ObjectId",
+                "title": "Id"
+              },
+              "isAllDay": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Checklist item is all day",
+                "title": "Isallday"
+              },
+              "sortOrder": {
+                "default": 0,
+                "description": "Checklist item sort order",
+                "title": "Sortorder",
+                "type": "integer"
+              },
+              "startDate": {
+                "anyOf": [
+                  {
+                    "format": "date-time",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Checklist item start time",
+                "title": "Startdate"
+              },
+              "status": {
+                "default": 0,
+                "description": "Checklist item status, 0 means not completed, 1 means completed",
+                "title": "Status",
+                "type": "integer"
+              },
+              "timeZone": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Checklist item time zone",
+                "title": "Timezone"
+              },
+              "title": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Checklist item title",
+                "title": "Title"
+              }
+            },
+            "title": "OpenChecklistItem",
+            "type": "object"
+          },
+          "OpenTask": {
+            "description": "TickTick task model.",
+            "properties": {
+              "assignor": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task assignor",
+                "title": "Assignor"
+              },
+              "childIds": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array",
+                    "uniqueItems": true
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Child task ids",
+                "title": "Childids"
+              },
+              "columnId": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Column id for Kanban view",
+                "title": "Columnid"
+              },
+              "columnName": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Column name for Kanban view",
+                "title": "Columnname"
+              },
+              "completedTime": {
+                "anyOf": [
+                  {
+                    "format": "date-time",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task completed time",
+                "title": "Completedtime"
+              },
+              "content": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task content, show when kind is \"TASK\" or \"NOTE\"",
+                "title": "Content"
+              },
+              "desc": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task description, show when kind is \"CHECKLIST\"",
+                "title": "Desc"
+              },
+              "dueDate": {
+                "anyOf": [
+                  {
+                    "format": "date-time",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task due date, show when not same as start date, mean it is duration",
+                "title": "Duedate"
+              },
+              "etag": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task etag for optimistic locking",
+                "title": "Etag"
+              },
+              "id": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "The task unique id, hex string of ObjectId",
+                "title": "Id"
+              },
+              "isAllDay": {
+                "default": false,
+                "description": "Whether the task is all day task",
+                "title": "Isallday",
+                "type": "boolean"
+              },
+              "items": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "$ref": "#/$defs/OpenChecklistItem"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task checklist items, show when kind is \"CHECKLIST\"",
+                "title": "Items"
+              },
+              "kind": {
+                "anyOf": [
+                  {
+                    "enum": [
+                      "TEXT",
+                      "NOTE",
+                      "CHECKLIST"
+                    ],
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task kind, \"TASK\" or \"NOTE\" or \"CHECKLIST\"",
+                "title": "Kind"
+              },
+              "parentId": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Parent task id for subtasks",
+                "title": "Parentid"
+              },
+              "priority": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task priority, 0 means no priority, 1 means low priority, 3 means medium priority, 5 means high priority",
+                "title": "Priority"
+              },
+              "projectId": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Project id of task",
+                "title": "Projectid"
+              },
+              "reminders": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task reminders, Each trigger string must follow this pattern:\nTRIGGER(;RELATED=(END))?:(-)?P[nY][nM][nW][nD][T[nH][nM][nS]]\nExplanation\n    TRIGGER: \u2014 required prefix\n    ;RELATED=START|END \u2014 optional, defines whether the trigger is relative to the start or end time\n    - \u2014 optional, indicates the trigger occurs before the reference time (absence means after)\n    P \u2014 duration designator\n    nY nM nW nD \u2014 years, months, weeks, days\n    T \u2014 time separator\n    nH nM nS \u2014 hours, minutes, seconds.\nExamples\n[\n  \"TRIGGER:-PT60M\",\n  \"TRIGGER:-P1DT2H\",\n  \"TRIGGER;RELATED=END:-PT15M\",\n  \"TRIGGER:PT0S\"\n]\n Notes\n    \"TRIGGER:-PT60M\" means 60 minutes before the reference time\n    \"TRIGGER;RELATED=END:-PT15M\" means 15 minutes before the end time\n    \"TRIGGER:PT0S\" represents an \u201con-time\u201d trigger\n    This structure corresponds to a duration format similar to ISO-8601 (e.g., P1DT2H), with additional semantics for direction and reference point.\n",
+                "title": "Reminders"
+              },
+              "repeatFlag": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task repeat flag\nThis field MUST be a valid recurrence rule string.\n\nUse:\n- RRULE for standard recurrence\n- ERULE for custom or advanced recurrence\n\nDO NOT mix RRULE and ERULE.\n\nPrefer examples:\n- \"RRULE:FREQ=DAILY\"\n- \"RRULE:FREQ=WEEKLY;BYDAY=MO,WE\"\n- \"ERULE:NAME=CUSTOM;BYDATE=20260325,20260330\"\n        ",
+                "title": "Repeatflag"
+              },
+              "sortOrder": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task sort order",
+                "title": "Sortorder"
+              },
+              "startDate": {
+                "anyOf": [
+                  {
+                    "format": "date-time",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task start date",
+                "title": "Startdate"
+              },
+              "status": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task status, 0 means not completed, -1 means abandoned, 2 means completed",
+                "title": "Status"
+              },
+              "tags": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array",
+                    "uniqueItems": true
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task tags",
+                "title": "Tags"
+              },
+              "timeZone": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task time zone",
+                "title": "Timezone"
+              },
+              "title": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Task title. Should be concise and clear. For longer content, use the content field instead.",
+                "title": "Title"
+              }
+            },
+            "title": "OpenTask",
+            "type": "object"
+          }
+        },
+        "properties": {
+          "tasks": {
+            "items": {
+              "$ref": "#/$defs/OpenTask"
+            },
+            "title": "Tasks",
+            "type": "array"
+          }
+        },
+        "required": [
+          "tasks"
+        ],
+        "title": "batch_update_tasksArguments",
+        "type": "object"
+      },
+      "name": "batch_update_tasks"
+    },
+    {
+      "description": "Get user preferences including timezone settings.\n\n        Returns:\n            User preference settings.\n        ",
+      "inputSchema": {
+        "properties": {},
+        "title": "get_user_preferenceArguments",
+        "type": "object"
+      },
+      "name": "get_user_preference"
+    }
+  ]
+}
